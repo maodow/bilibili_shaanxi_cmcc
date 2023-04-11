@@ -2,14 +2,13 @@ package tv.huan.bilibili.ui.welcome;
 
 import android.content.Intent;
 import android.widget.ImageView;
-
 import androidx.annotation.NonNull;
-
 import lib.kalu.frame.mvp.BaseActivity;
 import tv.huan.bilibili.R;
 import tv.huan.bilibili.ui.main.MainActivity;
 import tv.huan.bilibili.utils.ADUtil;
 import tv.huan.bilibili.utils.GlideUtils;
+import tv.huan.bilibili.bean.ServerSettingData.UpgradeBean;
 
 public class WelcomeActivity extends BaseActivity<WelcomeView, WelcomePresenter> implements WelcomeView {
 
@@ -44,8 +43,9 @@ public class WelcomeActivity extends BaseActivity<WelcomeView, WelcomePresenter>
     }
 
     @Override
-    public void next(@NonNull String data, @NonNull int select, @NonNull int type, @NonNull String cid, @NonNull int classId, @NonNull String secondTag) {
+    public void next(@NonNull UpgradeBean upgradeBean, @NonNull String data, @NonNull int select, @NonNull int type, @NonNull String cid, @NonNull int classId, @NonNull String secondTag) {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.putExtra(MainActivity.INTENT_UPGRADE, upgradeBean);
         intent.putExtra(MainActivity.INTENT_SELECT, select);
         intent.putExtra(MainActivity.INTENT_TABS, data);
         intent.putExtra(MainActivity.INTENT_TYPE, type);

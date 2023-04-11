@@ -1,25 +1,19 @@
 package tv.huan.bilibili.ui.detail;
 
-
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-
 import com.aspire.hdc.pay.sdk.PayApi;
 import com.aspire.hdc.pay.sdk.PayListener;
 import com.aspire.hdc.pay.sdk.PayRequest;
-
 import org.apache.commons.codec.binary.Base16;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.codec.digest.HmacAlgorithms;
 import org.apache.commons.codec.digest.HmacUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.Random;
-
 import lib.kalu.frame.mvp.BaseActivity;
 import tv.huan.bilibili.R;
 import tv.huan.bilibili.bean.MediaBean;
@@ -28,7 +22,6 @@ import tv.huan.bilibili.utils.DevicesUtils;
 import tv.huan.bilibili.utils.LogUtil;
 import tv.huan.bilibili.utils.TimeUtils;
 import tv.huan.bilibili.widget.DetailGridView;
-import tv.huan.heilongjiang.HeilongjiangApi;
 
 public class DetailActivity extends BaseActivity<DetailView, DetailPresenter> implements DetailView {
 
@@ -156,7 +149,6 @@ public class DetailActivity extends BaseActivity<DetailView, DetailPresenter> im
     @Override
     public void jumpVip() {
         Toast.makeText(getApplicationContext(), "需要开通会员", Toast.LENGTH_SHORT).show();
-        //        HeilongjiangApi.jumpVip(getApplicationContext(), null);
         //跳转局方支付页面
         doPay("", "");
     }

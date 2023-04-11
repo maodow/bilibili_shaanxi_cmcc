@@ -2,16 +2,19 @@ package tv.huan.bilibili.http;
 
 import java.util.LinkedHashMap;
 import java.util.List;
-
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import lib.kalu.frame.mvp.interceptor.OkhttpInterceptorStandard;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 import tv.huan.bilibili.bean.Auth2BeanBase;
 import tv.huan.bilibili.bean.AuthBean;
@@ -27,7 +30,6 @@ import tv.huan.bilibili.bean.SearchAlbumByTypeNews;
 import tv.huan.bilibili.bean.SearchBean;
 import tv.huan.bilibili.bean.ServerSettingData;
 import tv.huan.bilibili.bean.SpecialBean;
-import tv.huan.bilibili.bean.base.BaseAuthorizationBean;
 import tv.huan.bilibili.bean.base.BaseResponsedBean;
 import tv.huan.bilibili.bean.base.BaseThirdResponse;
 import tv.huan.bilibili.bean.format.CallOptBean;
@@ -111,11 +113,6 @@ public interface HttpApi {
                                                                @Query("size") int size,
                                                                @Query(OkhttpInterceptorStandard.EXTRA) String extra);
 
-    // 白名单
-    @POST("apk/auth2")
-    Observable<Auth2BeanBase> auth2(@Query("cid") String cid,
-                                    @Query(OkhttpInterceptorStandard.EXTRA) String extra);
-
     // 获取影片详情
     @GET("media/getMediasByCid/{cid}")
     Observable<BaseResponsedBean<GetMediasByCid2Bean>> getMediasByCid2(@Path("cid") String cid);
@@ -187,6 +184,19 @@ public interface HttpApi {
                                                           @Query("pos") int pos, //集数从0开始
                                                           @Query("playTime") long playTime, //当前播放时长
                                                           @Query("playLength") long playLength); //当前视频时长
+
+
+    /*大文件需要加入Streaming这个判断，防止下载过程中写入到内存中,造成oom*/
+    @Streaming
+    @GET
+    Flowable<ResponseBody> download(@Header("range") String start, @Url String url);
+
+
+    /*没有断点续传*/
+    @Streaming
+    @GET
+    Flowable<ResponseBody> download(@Url String url);
+
 
 
     //    // 获取HuanId

@@ -2,6 +2,7 @@ package tv.huan.bilibili.ui.main;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -27,6 +28,7 @@ import lib.kalu.leanback.tab.model.TabModelImage;
 import lib.kalu.leanback.tab.model.TabModelText;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+import tv.huan.bilibili.BuildConfig;
 import tv.huan.bilibili.R;
 import tv.huan.bilibili.base.BasePresenterImpl;
 import tv.huan.bilibili.bean.ExitBean;
@@ -43,8 +45,11 @@ import tv.huan.bilibili.utils.ADUtil;
 import tv.huan.bilibili.utils.DevicesUtils;
 import tv.huan.bilibili.utils.JumpUtil;
 import tv.huan.bilibili.utils.LogUtil;
+import tv.huan.bilibili.utils.StringUtils;
+import tv.huan.bilibili.bean.ServerSettingData.UpgradeBean;
 
 public class MainPresenter extends BasePresenterImpl<MainView> {
+
     public MainPresenter(@NonNull MainView mainView) {
         super(mainView);
     }
@@ -423,7 +428,11 @@ public class MainPresenter extends BasePresenterImpl<MainView> {
                         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=utf-8"), json);
 //                        String url = HeilongjiangApi.getEpgServer(getView().getContext());
                         String epgServer = DevicesUtils.INSTANCE.getEpgServer();
-                        return HttpClient.getHttpClient().getHttpApi().getPlayUrl(epgServer, requestBody);
+                        String reqUrl = "";
+                        if(!TextUtils.isEmpty(epgServer)){
+                            reqUrl = epgServer.concat(BuildConfig.PLAY_API);
+                        }
+                        return HttpClient.getHttpClient().getHttpApi().getPlayUrl(reqUrl, requestBody);
                     }
                 })
                 // 获取播放地址 => 数据处理

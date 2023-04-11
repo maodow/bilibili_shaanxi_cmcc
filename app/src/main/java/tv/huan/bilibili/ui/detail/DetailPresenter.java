@@ -1,22 +1,18 @@
 package tv.huan.bilibili.ui.detail;
 
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.ItemBridgeAdapter;
 import androidx.leanback.widget.ObjectAdapter;
 import androidx.leanback.widget.VerticalGridView;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.gson.Gson;
-
 import org.json.JSONObject;
-
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -27,15 +23,14 @@ import io.reactivex.functions.Function;
 import lib.kalu.frame.mvp.transformer.ComposeSchedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+import tv.huan.bilibili.BuildConfig;
 import tv.huan.bilibili.R;
 import tv.huan.bilibili.base.BasePresenterImpl;
-import tv.huan.bilibili.bean.Auth2BeanBase;
 import tv.huan.bilibili.bean.FavorBean;
 import tv.huan.bilibili.bean.GetMediasByCid2Bean;
 import tv.huan.bilibili.bean.MediaBean;
 import tv.huan.bilibili.bean.MediaDetailBean;
 import tv.huan.bilibili.bean.RecMediaBean;
-import tv.huan.bilibili.bean.base.BaseAuthorizationBean;
 import tv.huan.bilibili.bean.base.BaseResponsedBean;
 import tv.huan.bilibili.bean.base.BaseThirdResponse;
 import tv.huan.bilibili.bean.format.CallDetailBean;
@@ -186,39 +181,6 @@ public class DetailPresenter extends BasePresenterImpl<DetailView> {
                         } catch (Exception e) {
                             detailBean.setRecAlbums(null);
                         }
-                        return detailBean;
-                    }
-                })
-                // 白名单
-                .flatMap(new Function<CallDetailBean, ObservableSource<Auth2BeanBase>>() {
-                    @Override
-                    public ObservableSource<Auth2BeanBase> apply(CallDetailBean detailBean) {
-                        String s = new Gson().toJson(detailBean);
-                        String cid = getView().getStringExtra(DetailActivity.INTENT_CID, null);
-                        return HttpClient.getHttpClient().getHttpApi().auth2(cid, s);
-                    }
-                })
-                // 白名单 => 数据处理
-                .map(new Function<Auth2BeanBase, CallDetailBean>() {
-                    @Override
-                    public CallDetailBean apply(Auth2BeanBase auth2Bean) {
-
-                        CallDetailBean detailBean;
-                        try {
-                            detailBean = new Gson().fromJson(auth2Bean.getExtra(), CallDetailBean.class);
-                        } catch (Exception e) {
-                            detailBean = new CallDetailBean();
-                        }
-
-                        // 白名单
-                        try {
-                            boolean whiteUser = auth2Bean.isWhiteUser();
-                            if (whiteUser) {
-                                detailBean.setPlayType(Integer.MAX_VALUE);
-                            }
-                        } catch (Exception e) {
-                        }
-
                         return detailBean;
                     }
                 })
@@ -721,7 +683,11 @@ public class DetailPresenter extends BasePresenterImpl<DetailView> {
                         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=utf-8"), json);
 //                        String url = HeilongjiangApi.getEpgServer(getView().getContext());
                         String epgServer = DevicesUtils.INSTANCE.getEpgServer();
-                        return HttpClient.getHttpClient().getHttpApi().getPlayUrl(epgServer, requestBody);
+                        String reqUrl = "";
+                        if(!TextUtils.isEmpty(epgServer)){
+                            reqUrl = epgServer.concat(BuildConfig.PLAY_API);
+                        }
+                        return HttpClient.getHttpClient().getHttpApi().getPlayUrl(reqUrl, requestBody);
                     }
                 })
                 // 获取播放地址 => 数据处理

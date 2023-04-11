@@ -3,26 +3,26 @@ package tv.huan.bilibili.ui.main;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.leanback.widget.Presenter;
-
 import org.json.JSONObject;
-
 import java.util.List;
-
 import lib.kalu.frame.mvp.BaseActivity;
 import lib.kalu.leanback.page.OnPageChangeListener;
 import lib.kalu.leanback.page.PageView;
 import lib.kalu.leanback.tab.TabLayout;
 import lib.kalu.leanback.tab.listener.OnTabChangeListener;
 import lib.kalu.leanback.tab.model.TabModel;
+import tv.huan.bilibili.BuildConfig;
 import tv.huan.bilibili.R;
 import tv.huan.bilibili.dialog.ExitDialog;
+import tv.huan.bilibili.upgrade.AppUpdateHelp;
 import tv.huan.bilibili.utils.ADUtil;
+import tv.huan.bilibili.utils.StringUtils;
 import tv.huan.bilibili.widget.GeneralGridView;
+import tv.huan.bilibili.bean.ServerSettingData.UpgradeBean;
 
 public class MainActivity extends BaseActivity<MainView, MainPresenter> implements MainView {
 
@@ -42,8 +42,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     public static final int INTENT_TYPE_SPECIAL_5 = 9; // 专题5
     public static final int INTENT_TYPE_SPECIAL_6 = 10; // 专题6
 
+    public static final String INTENT_UPGRADE = "intent_update";
     public static final String INTENT_SELECT = "intent_select";
     public static final String INTENT_TABS = "intent_tabs";
+
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
@@ -80,6 +82,20 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     public void initData() {
         getPresenter().checkIntent();
         getPresenter().showTabs();
+        // 自更新检测
+        UpgradeBean upgradeBean = (UpgradeBean)getIntent().getSerializableExtra(MainActivity.INTENT_UPGRADE);
+        if (null != upgradeBean) {
+            checkUpgrade(upgradeBean);
+        }
+    }
+
+    private void checkUpgrade(UpgradeBean upgradeBean) {
+        if (upgradeBean.getUpdate()
+                && upgradeBean.getVersionCode() > BuildConfig.VERSION_CODE
+                && !StringUtils.isTrimEmpty(upgradeBean.getUrl())
+        ) {
+            AppUpdateHelp.Companion.getINSTANCE().getAppUpdate(this).showDetectionUpdate();
+        }
     }
 
     @Override
