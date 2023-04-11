@@ -2,11 +2,7 @@ package tv.huan.bilibili.utils;
 
 import android.app.Application;
 import android.content.Context;
-
 import java.util.LinkedList;
-
-import lib.kalu.frame.mvp.util.DevicesUtil;
-import tv.huan.bilibili.BuildConfig;
 import tv.huan.bilibili.R;
 import tv.scene.ad.opensdk.AdSlot;
 import tv.scene.ad.opensdk.INormAd;
@@ -34,19 +30,18 @@ public final class ADUtil {
 
     public static void adInit(Application application) {
         try {
-            SceneAdConfig config = new SceneAdConfig.Builder()
+            SceneAdConfig config = new SceneAdConfig.Builder ()
                     //appkey到后台申请，每个应用保证唯一性
-                    .setAppKey("Ylk5hg")
-//                    .setAppKey("7dc15107ec1341ae80bf5f49fee16af2")
+                    .setAppKey(Constants.APP_KEY)
                     //应用名称，对接应用添加
-                    .setAppName(application.getResources().getString(R.string.app_name))
+                    .setAppName("云视听小电视")
                     //测试阶段打开，可以通过日志排查问题，上线时去除该调用
-                    .setOpenLog(BuildConfig.HUAN_LOG)
-                    .setDebugUrl(false)
+                    .setOpenLog(true)
+                    .setDebugUrl(false) //广告位是正式环境,使用正式环境需要把初始化时的setDebugUrl去掉或者设为false , 然后清一下APP缓存
                     //厂商设置
-                    .setManufacture("heilongjiang-yd-bilibili")
+                    .setManufacture("shaanxi-yd-bilibili")
                     //机型设置
-                    .setDeviceModel(DevicesUtil.getDeviceModel())
+                    .setDeviceModel(DevicesUtils.INSTANCE.getModel())
                     .setRequestTimeOutSeconds(10)
                     .builder();
             SceneAdSDK.init(application, config);
@@ -60,7 +55,7 @@ public final class ADUtil {
 
         try {
             SceneAdSDK.getAdManager().createAdFactory(context).loadAd(new AdSlot.Builder()
-                    .setCodeId("operator-openscreen-hlj-cmcc")
+                    .setCodeId(Constants.OPEN_SCREEN_AD)
                     .setDisplayCountDown(false)
                     .setMediaView(null)
                     .build(), new AbsAdListener() {
@@ -84,7 +79,7 @@ public final class ADUtil {
 
         try {
             SceneAdSDK.getAdManager().createAdFactory(context).loadAd(new AdSlot.Builder()
-                    .setCodeId("operator-preroll-hlj-cmcc")
+                    .setCodeId(Constants.PRE_ROLL_AD)
                     .setDisplayCountDown(false)
                     .setMediaView(null)
                     .build(), new AbsAdListener() {
@@ -108,7 +103,7 @@ public final class ADUtil {
 
         try {
             SceneAdSDK.getAdManager().createAdFactory(context).loadAd(new AdSlot.Builder()
-                    .setCodeId("operator-pause-hlj-cmcc")
+                    .setCodeId(Constants.PAUSE_AD)
                     .setDisplayCountDown(false)
                     .setMediaView(null)
                     .build(), new AbsAdListener() {
@@ -132,7 +127,7 @@ public final class ADUtil {
 
         try {
             SceneAdSDK.getAdManager().createAdFactory(context).loadAd(new AdSlot.Builder()
-                    .setCodeId("operator-quit-hlj-cmcc")
+                    .setCodeId(Constants.EXIT_AD)
                     .setDisplayCountDown(false)
                     .setMediaView(null)
                     .build(), new AbsAdListener() {

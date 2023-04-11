@@ -161,7 +161,7 @@ public class DetailActivity extends BaseActivity<DetailView, DetailPresenter> im
 
     @Override
     public void getMediaUrl(MediaBean media, long seek) {
-        getPresenter().getMediaUrl(media, seek);
+//        getPresenter().getMediaUrl(media, seek);
 
 
         //test
