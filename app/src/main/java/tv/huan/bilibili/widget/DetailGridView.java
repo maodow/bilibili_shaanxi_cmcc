@@ -129,13 +129,14 @@ public final class DetailGridView extends LeanBackVerticalGridView {
             int index = data.getEpisodeIndex() + 1;
             // 免费
             if (playType > 0 && index <= playType) {
-                startHuawei(data);
+                startGetUrl(data);
             }
             // 收费
             else {
                 checkAccount(data);
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -154,7 +155,7 @@ public final class DetailGridView extends LeanBackVerticalGridView {
         }
     }
 
-    private void startHuawei(@NonNull MediaBean data) {
+    private void startGetUrl(@NonNull MediaBean data) {
         try {
             ViewHolder viewHolder = findViewHolderForAdapterObject(DetailTemplatePlayer.DetailTemplatePlayerObject.class);
             if (null == viewHolder)
@@ -162,9 +163,9 @@ public final class DetailGridView extends LeanBackVerticalGridView {
             DetailTemplatePlayer presenterPlayer = getPresenter(DetailTemplatePlayer.class);
             if (null == presenterPlayer)
                 throw new Exception("presenterPlayer error: null");
-            presenterPlayer.startHuawei(viewHolder.itemView, data);
+            presenterPlayer.getPlayUrl(viewHolder.itemView, data);
         } catch (Exception e) {
-            LogUtil.log("DetailGridView => startHuawei => " + e.getMessage());
+            LogUtil.log("DetailGridView => getPlayUrl => " + e.getMessage());
         }
     }
 

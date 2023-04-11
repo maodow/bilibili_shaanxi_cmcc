@@ -34,7 +34,10 @@ public final class MediaDetailBean extends BaseImageBean implements Serializable
     private String resolutionList;
     private String url;
     private String encryptionType;
-    private int playType;
+
+    private int payStatus; //付费类型  0免费;  1收费
+    private int playType = -1; //播放策略(payStatus = 1时生效)  0:全部收费;  1:一集免费;  2:两集免费
+
     private String price;//名字
     private String productName;//单点名字
     private int validTerm;//单点天数
@@ -152,6 +155,13 @@ public final class MediaDetailBean extends BaseImageBean implements Serializable
         this.validTerm = validTerm;
     }
 
+    public int getPayStatus() {
+        return payStatus;
+    }
+
+    public void setPayStatus(int payStatus) {
+        this.payStatus = payStatus;
+    }
 
     public int getPlayType() {
         return playType;

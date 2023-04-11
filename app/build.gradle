@@ -1,10 +1,15 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
+def static releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+}
 
 android {
 
     namespace 'tv.huan.bilibili'
     compileSdkVersion 33
-    buildToolsVersion "33.0.1"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "tv.huan.bilibili"
@@ -37,6 +42,35 @@ android {
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            applicationIdSuffix ".shanxi"
+            versionNameSuffix ".shanxi"
+            manifestPlaceholders = [design_width_in_dp_value: "960", design_height_in_dp_value: "540"]
+            buildConfigField("boolean", "HUAN_AUTH", "true")  // 鉴权开关
+            buildConfigField("boolean", "HUAN_LOG", "true")  // 日志log
+            buildConfigField("boolean", "HUAN_SKIN", "false")// 换肤skin
+            buildConfigField("boolean", "HUAN_CHECK_USERID", "false")  // 检测userId获取是否正常
+            buildConfigField("boolean", "HUAN_TEST_TEMPLATE_ENABLE", "false") // 测试模板1-22
+
+            buildConfigField("int", "HUAN_PAGE_NUM", "100") // 接口分页num
+            buildConfigField("boolean", "HUAN_ALWAYS_SHOW_TOAST_THROWABLE", "true")
+            buildConfigField("boolean", "HUAN_ALWAYS_SHOW_DETAIL_VIP", "true")  // 详情vip按钮
+            buildConfigField("boolean", "HUAN_CHECK_VIP", "true") // 检测vip
+            buildConfigField("boolean", "HUAN_HUAWEI_AUTH", "true") // 鉴权播放开关
+
+            buildConfigField("String", "HUAN_API", "\"http://123.59.196.222:8188/mediaApi/\"")
+            buildConfigField("String", "PLAY_API", "\"/EPG/interEpg/user/default/authorize\"")
+
+            buildConfigField("int", "HUAN_TYPE_GETFISH", "310")//垂钓
+            buildConfigField("int", "HUAN_TYPE_LIFE", "309")//茶文化
+            buildConfigField("int", "HUAN_TYPE_SPORTS", "308")//体育
+            buildConfigField("int", "HUAN_TYPE_SPORTSLIFE", "307")//健身
+            buildConfigField("int", "HUAN_TYPE_EDUCATION", "306")//教育
+            buildConfigField("int", "HUAN_TYPE_DOCUMENTARY", "305")//纪录片
+            buildConfigField("int", "HUAN_TYPE_VARIETY", "304")//综艺
+            buildConfigField("int", "HUAN_TYPE_ANIME", "303")//动漫
+            buildConfigField("int", "HUAN_TYPE_CHILDREN", "302")//少儿
+            buildConfigField("int", "HUAN_TYPE_TELEPLAY", "301")//电视剧
+            buildConfigField("int", "HUAN_TYPE_FILM", "300")//电影
         }
         debug {
             signingConfig signingConfigs.release
@@ -44,90 +78,48 @@ android {
             zipAlignEnabled false
             shrinkResources false
             minifyEnabled false
-        }
-    }
-
-    //打包APK默认名称格式
-    android.applicationVariants.all { variant ->
-        variant.outputs.all { output ->
-            def date = new Date().format("yyyyMMdd", TimeZone.getTimeZone("GMT+08"))
-            def suffix = (variant.signingConfig == null) ? "Unsigned" : "Signed"
-            def channel = new String(output.name).split("-")
-            outputFileName = "Huan_Bilibili_" + channel[0] + "_${variant.mergedFlavor.versionName}_${date}_${suffix}.apk"
-        }
-    }
-
-    flavorDimensions "dimen"
-
-    productFlavors {
-        // 演示
-        Yanshi {
-            resValue "string", "app_name", "云视听小电视[演示]"
-            applicationIdSuffix ".yanshi"
-            versionNameSuffix ".yanshi"
+            applicationIdSuffix ".shanxi"
+            versionNameSuffix ".shanxi"
             manifestPlaceholders = [design_width_in_dp_value: "960", design_height_in_dp_value: "540"]
-            buildConfigField("int", "HUAN_TYPE_GETFISH", "310")//垂钓
-            buildConfigField("int", "HUAN_TYPE_LIFE", "309")//茶文化
-            buildConfigField("int", "HUAN_TYPE_SPORTS", "308")//体育
-            buildConfigField("int", "HUAN_TYPE_SPORTSLIFE", "307")//健身
-            buildConfigField("int", "HUAN_TYPE_EDUCATION", "306")//教育
-            buildConfigField("int", "HUAN_TYPE_DOCUMENTARY", "305")//纪录片
-            buildConfigField("int", "HUAN_TYPE_VARIETY", "304")//综艺
-            buildConfigField("int", "HUAN_TYPE_ANIME", "303")//动漫
-            buildConfigField("int", "HUAN_TYPE_CHILDREN", "302")//少儿
-            buildConfigField("int", "HUAN_TYPE_TELEPLAY", "301")//电视剧
-            buildConfigField("int", "HUAN_TYPE_FILM", "300")//电影
-            buildConfigField("int", "HUAN_PAGE_NUM", "100") // 接口分页num
-            buildConfigField("boolean", "HUAN_ALWAYS_SHOW_TOAST_THROWABLE", "false")
-            // 提示Throwable_Toast
-            buildConfigField("boolean", "HUAN_ALWAYS_SHOW_DETAIL_VIP", "true")  // 详情vip按钮
+            buildConfigField("boolean", "HUAN_AUTH", "true")  // 鉴权开关
             buildConfigField("boolean", "HUAN_LOG", "true")  // 日志log
-            buildConfigField("boolean", "HUAN_SKIN", "false") // 换肤skin => 暂无
-            buildConfigField("boolean", "HUAN_HUAWEI_AUTH", "false") // 华为鉴权播放开关
-            buildConfigField("boolean", "HUAN_CHECK_USERID", "false") // 检测userId, 开启获取失败禁止进去主页
-            buildConfigField("boolean", "HUAN_CHECK_VIP", "false") // 检测vip
+            buildConfigField("boolean", "HUAN_SKIN", "false")// 换肤skin
+            buildConfigField("boolean", "HUAN_CHECK_USERID", "false")  // 检测userId获取是否正常
             buildConfigField("boolean", "HUAN_TEST_TEMPLATE_ENABLE", "false") // 测试模板1-22
-            buildConfigField("String", "HUAN_API", "\"http://123.59.196.225:8162/mediaApi/\"")
-        }
-        // 黑龙江
-        Heilongjinag {
-            resValue "string", "app_name", "云视听小电视[黑龙江]"
-            applicationIdSuffix ".heilongjiang"
-            versionNameSuffix ".heilongjiang"
-            manifestPlaceholders = [design_width_in_dp_value: "960", design_height_in_dp_value: "540"]
-            buildConfigField("int", "HUAN_TYPE_GETFISH", "310")//垂钓
-            buildConfigField("int", "HUAN_TYPE_LIFE", "309")//茶文化
-            buildConfigField("int", "HUAN_TYPE_SPORTS", "308")//体育
-            buildConfigField("int", "HUAN_TYPE_SPORTSLIFE", "307")//健身
-            buildConfigField("int", "HUAN_TYPE_EDUCATION", "306")//教育
-            buildConfigField("int", "HUAN_TYPE_DOCUMENTARY", "305")//纪录片
-            buildConfigField("int", "HUAN_TYPE_VARIETY", "304")//综艺
-            buildConfigField("int", "HUAN_TYPE_ANIME", "303")//动漫
-            buildConfigField("int", "HUAN_TYPE_CHILDREN", "302")//少儿
-            buildConfigField("int", "HUAN_TYPE_TELEPLAY", "301")//电视剧
-            buildConfigField("int", "HUAN_TYPE_FILM", "300")//电影
+
             buildConfigField("int", "HUAN_PAGE_NUM", "100") // 接口分页num
             buildConfigField("boolean", "HUAN_ALWAYS_SHOW_TOAST_THROWABLE", "true")
-            // 提示Throwable_Toast
-            buildConfigField("boolean", "HUAN_ALWAYS_SHOW_DETAIL_VIP", "false")  // 详情vip按钮
-            buildConfigField("boolean", "HUAN_LOG", "true")  // 日志log
-            buildConfigField("boolean", "HUAN_SKIN", "false") // 换肤skin => 暂无
-            buildConfigField("boolean", "HUAN_HUAWEI_AUTH", "true") // 华为鉴权播放开关
-            buildConfigField("boolean", "HUAN_CHECK_USERID", "true") // 检测userId, 开启获取失败禁止进去主页
+            buildConfigField("boolean", "HUAN_ALWAYS_SHOW_DETAIL_VIP", "true")  // 详情vip按钮
             buildConfigField("boolean", "HUAN_CHECK_VIP", "true") // 检测vip
-            buildConfigField("boolean", "HUAN_TEST_TEMPLATE_ENABLE", "false") // 测试模板1-22
-            buildConfigField("String", "HUAN_API", "\"http://123.59.196.225:9002/mediaApi/\"")
+            buildConfigField("boolean", "HUAN_HUAWEI_AUTH", "true") // 鉴权播放开关
+
+            buildConfigField("String", "HUAN_API", "\"http://36.133.254.116:81/\"")
+            buildConfigField("String", "PLAY_API", "\"/EPG/interEpg/user/default/authorize\"")
+
+            buildConfigField("int", "HUAN_TYPE_GETFISH", "310")//垂钓
+            buildConfigField("int", "HUAN_TYPE_LIFE", "309")//茶文化
+            buildConfigField("int", "HUAN_TYPE_SPORTS", "308")//体育
+            buildConfigField("int", "HUAN_TYPE_SPORTSLIFE", "307")//健身
+            buildConfigField("int", "HUAN_TYPE_EDUCATION", "306")//教育
+            buildConfigField("int", "HUAN_TYPE_DOCUMENTARY", "305")//纪录片
+            buildConfigField("int", "HUAN_TYPE_VARIETY", "304")//综艺
+            buildConfigField("int", "HUAN_TYPE_ANIME", "303")//动漫
+            buildConfigField("int", "HUAN_TYPE_CHILDREN", "302")//少儿
+            buildConfigField("int", "HUAN_TYPE_TELEPLAY", "301")//电视剧
+            buildConfigField("int", "HUAN_TYPE_FILM", "300")//电影
         }
     }
-
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
         }
     }
 
-    aaptOptions {
-        cruncherEnabled = true // aapt优化图片png
+    //打包APK默认名称格式
+    android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "Huan_Bilibili_shanxi_" + "${variant.mergedFlavor.versionName}_${releaseTime()}.apk"
+        }
     }
 
     packagingOptions {
@@ -150,6 +142,7 @@ android {
 
 
 dependencies {
+    
     // autosize
     api files('libs/lib_autosize_v1.2.1_release.aar')
     // mvp
@@ -165,6 +158,11 @@ dependencies {
     // heilongjiang
     // api project(path: ':huan_heilongjiang')
     api files('libs/lib_huan_heilongjiang_release_20230407.aar')
+
+    //Pay支付sdk
+    api files('libs/hdc-pay-sdk-1.0.2.jar')
+
+
     // core
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.recyclerview:recyclerview:1.3.0' // 1.2.1
@@ -176,4 +174,12 @@ dependencies {
     // glide
     implementation 'com.github.bumptech.glide:glide:4.15.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.15.1'
+
+    implementation 'commons-codec:commons-codec:1.15'
+
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
+    implementation 'com.alibaba:fastjson:1.2.58'
+    implementation 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
+
 }

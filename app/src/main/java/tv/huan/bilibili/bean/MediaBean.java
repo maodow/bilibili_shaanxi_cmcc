@@ -30,6 +30,10 @@ public class MediaBean extends BaseImageBean implements Serializable, TvPresente
     private String[] tempPicList;
     private long tempSeek;
 
+    private String movieCode; //中兴平台
+    private String hwMovieCode; //华为平台
+
+
     public String getTempVideoUrl() {
         return tempVideoUrl;
     }
@@ -108,6 +112,22 @@ public class MediaBean extends BaseImageBean implements Serializable, TvPresente
 
     public void setTempSeek(long tempSeek) {
         this.tempSeek = tempSeek;
+    }
+
+    public String getMovieCode() {
+        return movieCode;
+    }
+
+    public void setMovieCode(String movieCode) {
+        this.movieCode = movieCode;
+    }
+
+    public String getHwMovieCode() {
+        return hwMovieCode;
+    }
+
+    public void setHwMovieCode(String hwMovieCode) {
+        this.hwMovieCode = hwMovieCode;
     }
 
     @Override

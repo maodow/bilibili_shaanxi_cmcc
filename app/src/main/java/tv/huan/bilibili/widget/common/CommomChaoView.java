@@ -11,6 +11,7 @@ import androidx.core.view.ViewCompat;
 
 import lib.kalu.leanback.plus.TextViewPlus;
 import tv.huan.bilibili.R;
+import tv.huan.bilibili.utils.AuthUtils;
 import tv.huan.heilongjiang.HeilongjiangApi;
 import tv.huan.heilongjiang.OnStatusChangeListener;
 
@@ -64,7 +65,7 @@ public final class CommomChaoView extends TextViewPlus {
     }
 
     private void checkVip() {
-        HeilongjiangApi.checkVip(getContext(), new OnStatusChangeListener() {
+        AuthUtils.getInstance().doAuth(new OnStatusChangeListener() {
             @Override
             public void onPass() {
                 updateText(true);

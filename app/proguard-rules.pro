@@ -181,3 +181,6 @@
 # ad
 -keep class tv.scene.ad.** { *; }
 -keep public interface tv.scene.ad.net.download.** {*;}
+
+ #保留支付SDK不被混淆
+ -keep public class com.aspire.hdc.pay.**{*;}

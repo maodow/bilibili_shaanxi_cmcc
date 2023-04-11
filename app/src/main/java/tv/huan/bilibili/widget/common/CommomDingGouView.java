@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import lib.kalu.leanback.plus.TextViewPlus;
+import tv.huan.bilibili.utils.AuthUtils;
 import tv.huan.heilongjiang.HeilongjiangApi;
 import tv.huan.heilongjiang.OnStatusChangeListener;
 
@@ -46,7 +47,7 @@ public final class CommomDingGouView extends TextViewPlus {
     }
 
     private void checkVip() {
-        HeilongjiangApi.checkVip(getContext(), new OnStatusChangeListener() {
+        AuthUtils.getInstance().doAuth(new OnStatusChangeListener() {
             @Override
             public void onPass() {
                 updateVisibility(false);

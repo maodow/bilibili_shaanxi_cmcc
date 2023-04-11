@@ -121,6 +121,27 @@ public class GetSubChannelsByChannelBean implements Serializable {
             @SerializedName("jumpParam")
             private String huaweiId;
 
+            private String movieCode; //中兴平台
+            private String hwMovieCode; //华为平台
+
+
+            public String getMovieCode() {
+                return movieCode;
+            }
+
+            public void setMovieCode(String movieCode) {
+                this.movieCode = movieCode;
+            }
+
+            public String getHwMovieCode() {
+                return hwMovieCode;
+            }
+
+            public void setHwMovieCode(String hwMovieCode) {
+                this.hwMovieCode = hwMovieCode;
+            }
+
+
             public String getHuaweiId() {
                 return huaweiId;
             }

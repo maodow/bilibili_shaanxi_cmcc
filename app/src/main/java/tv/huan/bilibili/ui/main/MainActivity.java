@@ -7,6 +7,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
+import androidx.leanback.widget.Presenter;
 
 import org.json.JSONObject;
 
@@ -158,13 +159,13 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     }
 
     @Override
-    public <T extends androidx.leanback.widget.Presenter> void huaweiAuth(Class<T> cls, Class<?> obj, String cid) {
-        getPresenter().requestHuaweiAuth(cls, obj, cid);
+    public <T extends Presenter> void getMediaUrl(Class<T> cls, Class<?> obj, String cid) {
+        getPresenter().getMediaUrl(cls, obj, cid);
     }
 
     @Override
-    public <T extends androidx.leanback.widget.Presenter> void huaweiSucc(Class<T> cls, Class<?> obj, String s) {
-        getPresenter().startPlayerFromFragment(cls, obj, s);
+    public <T extends Presenter> void onGetPlayUrlSuccess(Class<T> cls, Class<?> obj,  String s) {
+        getPresenter().startPlayerFromFragment(cls, obj,  s);
     }
 
     @Override

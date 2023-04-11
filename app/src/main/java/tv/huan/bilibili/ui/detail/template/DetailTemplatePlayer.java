@@ -20,6 +20,7 @@ import tv.huan.bilibili.R;
 import tv.huan.bilibili.bean.MediaBean;
 import tv.huan.bilibili.bean.base.BaseDataBean;
 import tv.huan.bilibili.ui.detail.DetailActivity;
+import tv.huan.bilibili.utils.AuthUtils;
 import tv.huan.bilibili.utils.BoxUtil;
 import tv.huan.bilibili.utils.GlideUtils;
 import tv.huan.bilibili.utils.LogUtil;
@@ -132,7 +133,7 @@ public final class DetailTemplatePlayer extends Presenter {
                 TextView textView = view.findViewById(R.id.detail_player_item_vip);
                 textView.setVisibility(View.VISIBLE);
             } else {
-                HeilongjiangApi.checkVip(view.getContext(), new OnStatusChangeListener() {
+                AuthUtils.getInstance().doAuth(new OnStatusChangeListener() {
                     @Override
                     public void onPass() {
                         TextView textView = view.findViewById(R.id.detail_player_item_vip);
@@ -164,15 +165,15 @@ public final class DetailTemplatePlayer extends Presenter {
     public void checkVip(View view, MediaBean data) {
         try {
             LogUtil.log("DetailTemplatePlayer => checkAccount");
-            HeilongjiangApi.checkVip(view.getContext(), !BuildConfig.HUAN_CHECK_VIP, new OnStatusChangeListener() {
+            AuthUtils.getInstance().doAuth(new OnStatusChangeListener() {
                 @Override
                 public void onPass() {
-                    startHuawei(view, data);
+                    getPlayUrl(view, data);
                 }
 
                 @Override
                 public void onFail() {
-                    startShopping(view);
+                    goPay(view);
                 }
             });
         } catch (Exception e) {
@@ -180,7 +181,12 @@ public final class DetailTemplatePlayer extends Presenter {
         }
     }
 
-    private void startShopping(View view) {
+
+    /**
+     * 跳转支付
+     * @param view
+     */
+    private void goPay(View view) {
         try {
             Activity activity = WrapperUtil.getWrapperActivity(view.getContext());
             if (null == activity)
@@ -189,11 +195,17 @@ public final class DetailTemplatePlayer extends Presenter {
                 throw new Exception("activity error: " + activity);
             ((DetailActivity) activity).jumpVip();
         } catch (Exception e) {
-            LogUtil.log("DetailTemplatePlayer => startShopping => " + e.getMessage());
+            LogUtil.log("DetailTemplatePlayer => goPay() => " + e.getMessage());
         }
     }
 
-    public void startHuawei(View view, MediaBean data) {
+
+    /**
+     * 获取播放链接
+     * @param view
+     * @param data
+     */
+    public void getPlayUrl(View view, MediaBean data) {
         if (BuildConfig.HUAN_HUAWEI_AUTH) {
             try {
                 Activity activity = WrapperUtil.getWrapperActivity(view.getContext());
@@ -201,9 +213,9 @@ public final class DetailTemplatePlayer extends Presenter {
                     throw new Exception("activity error: null");
                 if (!(activity instanceof DetailActivity))
                     throw new Exception("activity error: " + activity);
-                ((DetailActivity) activity).huaweiAuth(data.getCid(), data.getTempSeek());
+                ((DetailActivity) activity).getMediaUrl(data, data.getTempSeek());
             } catch (Exception e) {
-                LogUtil.log("DetailTemplatePlayer => startHuawei => " + e.getMessage());
+                LogUtil.log("DetailTemplatePlayer => getPlayUrl() => " + e.getMessage());
             }
         } else {
             try {

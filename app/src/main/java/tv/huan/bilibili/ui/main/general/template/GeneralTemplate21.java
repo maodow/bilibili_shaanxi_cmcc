@@ -23,6 +23,7 @@ import tv.huan.bilibili.R;
 import tv.huan.bilibili.bean.GetSubChannelsByChannelBean;
 import tv.huan.bilibili.ui.main.MainActivity;
 import tv.huan.bilibili.utils.BoxUtil;
+import tv.huan.bilibili.utils.DevicesUtils;
 import tv.huan.bilibili.utils.GlideUtils;
 import tv.huan.bilibili.utils.JumpUtil;
 import tv.huan.bilibili.utils.LogUtil;
@@ -157,10 +158,13 @@ public class GeneralTemplate21 extends ListTvRowHeadPresenter<GetSubChannelsByCh
         if (BuildConfig.HUAN_HUAWEI_AUTH) {
             try {
                 Activity activity = WrapperUtil.getWrapperActivity(view.getContext());
-                if (null != activity && activity instanceof MainActivity) {
-                    ((MainActivity) activity).huaweiAuth(GeneralTemplate21.class, GeneralTemplate21.GeneralTemplate21List.class, templateBean.getHuaweiId());
+                if (activity instanceof MainActivity) {
+                    String platformType = DevicesUtils.INSTANCE.getPlatform(); //判断平台
+                    String mediaCid = "0".equals(platformType) ? templateBean.getHwMovieCode() : templateBean.getMovieCode();
+                    ((MainActivity) activity).getMediaUrl(GeneralTemplate21.class, GeneralTemplate21.GeneralTemplate21List.class, mediaCid);
                 }
             } catch (Exception e) {
+                e.printStackTrace();
             }
         } else {
             try {

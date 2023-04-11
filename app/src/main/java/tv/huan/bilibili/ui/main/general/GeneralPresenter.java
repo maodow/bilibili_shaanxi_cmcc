@@ -176,34 +176,37 @@ public class GeneralPresenter extends BasePresenterImpl<GeneralView> {
 
                         try {
                             List<GetSubChannelsByChannelBean.ClassesBean> classes = resp.getData().getClasses();
-                            LinkedList<GetSubChannelsByChannelBean.ListBean.TemplateBean> templateCalsss = new LinkedList<>();
-                            for (int n = 0; n < 5; n++) {
-                                GetSubChannelsByChannelBean.ClassesBean temp = classes.get(n);
-                                if (null == temp)
-                                    continue;
-                                String name = temp.getName();
+                            if (classes.size() > 0) {
+                                LinkedList<GetSubChannelsByChannelBean.ListBean.TemplateBean> templateCalsss = new LinkedList<>();
+                                for (int n = 0; n < /*5*/classes.size(); n++) {
+                                    GetSubChannelsByChannelBean.ClassesBean temp = classes.get(n);
+                                    if (null == temp)
+                                        continue;
+                                    String name = temp.getName();
+                                    GetSubChannelsByChannelBean.ListBean.TemplateBean bean = new GetSubChannelsByChannelBean.ListBean.TemplateBean();
+                                    bean.setName(name);
+                                    bean.setClassId(resp.getData().getParent().getId());
+                                    bean.setToType(2);
+                                    templateCalsss.add(bean);
+                                }
+                                // 1
                                 GetSubChannelsByChannelBean.ListBean.TemplateBean bean = new GetSubChannelsByChannelBean.ListBean.TemplateBean();
-                                bean.setName(name);
+                                bean.setName("更多分类");
                                 bean.setClassId(resp.getData().getParent().getId());
                                 bean.setToType(2);
                                 templateCalsss.add(bean);
+                                // 2
+                                GetSubChannelsByChannelBean.ListBean classDatas = new GetSubChannelsByChannelBean.ListBean();
+                                classDatas.setPreTemplate(-1);
+                                classDatas.setTemplateData(templateCalsss);
+                                // 3
+                                List<GetSubChannelsByChannelBean.ListBean> templateDatas = generalBean.getTemplateDatas();
+                                templateDatas.add(1, classDatas);
+                                // 4
+                                generalBean.setTemplateDatas(templateDatas);
                             }
-                            // 1
-                            GetSubChannelsByChannelBean.ListBean.TemplateBean bean = new GetSubChannelsByChannelBean.ListBean.TemplateBean();
-                            bean.setName("更多分类");
-                            bean.setClassId(resp.getData().getParent().getId());
-                            bean.setToType(2);
-                            templateCalsss.add(bean);
-                            // 2
-                            GetSubChannelsByChannelBean.ListBean classDatas = new GetSubChannelsByChannelBean.ListBean();
-                            classDatas.setPreTemplate(-1);
-                            classDatas.setTemplateData(templateCalsss);
-                            // 3
-                            List<GetSubChannelsByChannelBean.ListBean> templateDatas = generalBean.getTemplateDatas();
-                            templateDatas.add(1, classDatas);
-                            // 4
-                            generalBean.setTemplateDatas(templateDatas);
                         } catch (Exception e) {
+                            e.printStackTrace();
                         }
                         return generalBean;
                     }

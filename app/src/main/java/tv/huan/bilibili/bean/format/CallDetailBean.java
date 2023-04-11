@@ -10,7 +10,7 @@ import tv.huan.bilibili.bean.RecMediaBean;
 public class CallDetailBean implements Serializable {
 
     private boolean favor; //收藏状态
-    private int playType; // 播放策略, vip前几集免费看
+    private int playType; // 播放策略, 免费试看集数
     private String recClassId;
 
     private MediaDetailBean album; //媒资详情

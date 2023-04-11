@@ -29,6 +29,7 @@ import tv.huan.bilibili.bean.format.CallWelcomeBean;
 import tv.huan.bilibili.http.HttpClient;
 import tv.huan.bilibili.ui.main.MainActivity;
 import tv.huan.bilibili.utils.ADUtil;
+import tv.huan.bilibili.utils.DevicesUtils;
 import tv.huan.bilibili.utils.LogUtil;
 import tv.huan.heilongjiang.HeilongjiangApi;
 
@@ -90,20 +91,20 @@ public class WelcomePresenter extends BasePresenterImpl<WelcomeView> {
                     }
                 })
                 // 初始化支付sdk
-                .map(new Function<CallWelcomeBean, CallWelcomeBean>() {
-                    @Override
-                    public CallWelcomeBean apply(CallWelcomeBean data) {
-                        LogUtil.log("WelcomePresenter => request => 初始化支付sdk");
-                        if (BuildConfig.HUAN_CHECK_USERID) {
-                            try {
-                                Context context = getView().getContext();
-                                HeilongjiangApi.init(context);
-                            } catch (Exception e) {
-                            }
-                        }
-                        return data;
-                    }
-                })
+//                .map(new Function<CallWelcomeBean, CallWelcomeBean>() {
+//                    @Override
+//                    public CallWelcomeBean apply(CallWelcomeBean data) {
+//                        LogUtil.log("WelcomePresenter => request => 初始化支付sdk");
+//                        if (BuildConfig.HUAN_CHECK_USERID) {
+//                            try {
+//                                Context context = getView().getContext();
+//                                HeilongjiangApi.init(context);
+//                            } catch (Exception e) {
+//                            }
+//                        }
+//                        return data;
+//                    }
+//                })
                 // 获取userId
                 .map(new Function<CallWelcomeBean, CallWelcomeBean>() {
                     @Override
@@ -112,7 +113,8 @@ public class WelcomePresenter extends BasePresenterImpl<WelcomeView> {
                         try {
                             if (BuildConfig.HUAN_CHECK_USERID) {
                                 Context context = getView().getContext();
-                                String userId = HeilongjiangApi.getUserId(context);
+//                                String userId = HeilongjiangApi.getUserId(context);
+                                String userId = DevicesUtils.INSTANCE.getAccount();
                                 LogUtil.log("WelcomePresenter => request => userId = " + userId);
                                 if (null == userId || userId.length() <= 0) {
                                     String s = getView().getString(R.string.welcome_warning);
@@ -214,7 +216,7 @@ public class WelcomePresenter extends BasePresenterImpl<WelcomeView> {
                         } catch (Exception e) {
                         }
                         String s = new Gson().toJson(list);
-                        welcomeBean.setData(s);
+                        welcomeBean.setChannel(s);
 
                         int size = list.size();
                         if (size == 1) {
@@ -252,9 +254,9 @@ public class WelcomePresenter extends BasePresenterImpl<WelcomeView> {
                         if (data.containsAd()) {
                             getView().setVisibility(R.id.welcome_img, View.VISIBLE);
                             getView().updateBackground(data.getAdUrl());
-                            intervalTime(data.getData(), data.getSelect(), data.getType(), data.getCid(), data.getClassId(), data.getSecondTag(), data.getAdTime());
+                            intervalTime(data.getChannel(), data.getSelect(), data.getType(), data.getCid(), data.getClassId(), data.getSecondTag(), data.getAdTime());
                         } else {
-                            getView().next(data.getData(), data.getSelect(), data.getType(), data.getCid(), data.getClassId(), data.getSecondTag());
+                            getView().next(data.getChannel(), data.getSelect(), data.getType(), data.getCid(), data.getClassId(), data.getSecondTag());
                         }
                     }
                 })

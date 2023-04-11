@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import tv.huan.bilibili.utils.AuthUtils;
 import tv.huan.heilongjiang.HeilongjiangApi;
 import tv.huan.heilongjiang.OnStatusChangeListener;
 
@@ -49,7 +50,7 @@ public final class CommomDataView extends TextView {
     }
 
     private void checkVip() {
-        HeilongjiangApi.checkVip(getContext(), new OnStatusChangeListener() {
+        AuthUtils.getInstance().doAuth(new OnStatusChangeListener() {
             @Override
             public void onPass() {
                 updateVisibility(true);

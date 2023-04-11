@@ -14,6 +14,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import tv.huan.bilibili.bean.Auth2BeanBase;
+import tv.huan.bilibili.bean.AuthBean;
 import tv.huan.bilibili.bean.ExitBean;
 import tv.huan.bilibili.bean.FavBean;
 import tv.huan.bilibili.bean.FavorBean;
@@ -24,12 +25,49 @@ import tv.huan.bilibili.bean.GetSecondTagAlbumsBean;
 import tv.huan.bilibili.bean.GetSubChannelsByChannelBean;
 import tv.huan.bilibili.bean.SearchAlbumByTypeNews;
 import tv.huan.bilibili.bean.SearchBean;
+import tv.huan.bilibili.bean.ServerSettingData;
 import tv.huan.bilibili.bean.SpecialBean;
 import tv.huan.bilibili.bean.base.BaseAuthorizationBean;
 import tv.huan.bilibili.bean.base.BaseResponsedBean;
+import tv.huan.bilibili.bean.base.BaseThirdResponse;
 import tv.huan.bilibili.bean.format.CallOptBean;
 
 public interface HttpApi {
+
+
+    /**
+     *  获取服务器配置
+     * @param userId  用户account
+     */
+    @GET("apk/getSettings")
+    Observable<BaseResponsedBean<ServerSettingData>> getSetting(@Query("userId") String userId,
+                                                                @Query(OkhttpInterceptorStandard.EXTRA) String extra);
+
+
+    /**
+     *  用户鉴权
+     *
+     * @param userId 用户account
+     * @param stbId 机顶盒串号
+     * @param contentId 内容ID 非必传，不传即是对用户的鉴权 (统一鉴权测试内容ID：program12011824070)
+     *        统一鉴权测试产品编码： ye_db_001  ye_by_001
+              统一鉴权测试内容ID：  program12011824070
+     *
+     */
+    @GET("boss/auth")
+    Observable<BaseResponsedBean<AuthBean>> getAuth(@Query("userId") String userId,
+                                                    @Query("stbId") String stbId,
+                                                    @Query("contentId") String contentId);
+
+
+    /**
+     * 对接局方接口，获取媒资播放链接
+     * @return
+     */
+    @POST()
+    Observable<BaseThirdResponse> getPlayUrl(@Url String url, @Body RequestBody requestBody);
+
+
 
     // 日志上报
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -79,7 +117,7 @@ public interface HttpApi {
                                     @Query(OkhttpInterceptorStandard.EXTRA) String extra);
 
     // 获取影片详情
-    @GET("media/getMediasByCid2/{cid}")
+    @GET("media/getMediasByCid/{cid}")
     Observable<BaseResponsedBean<GetMediasByCid2Bean>> getMediasByCid2(@Path("cid") String cid);
 
     // 首字母搜索
@@ -150,11 +188,6 @@ public interface HttpApi {
                                                           @Query("playTime") long playTime, //当前播放时长
                                                           @Query("playLength") long playLength); //当前视频时长
 
-    // 华为播放鉴权
-    @POST()
-    Observable<BaseAuthorizationBean> huaweiAuth(@Url String url,
-                                                 @Body RequestBody requestBody,
-                                                 @Query(OkhttpInterceptorStandard.EXTRA) String extra);
 
     //    // 获取HuanId
 //    @GET("apk/getHuanId")

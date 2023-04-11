@@ -1,6 +1,7 @@
 package tv.huan.bilibili.ui.main;
 
 import androidx.annotation.NonNull;
+import androidx.leanback.widget.Presenter;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public interface MainView extends BaseViewImpl {
 
     void stopFullPlayer();
 
-    <T extends androidx.leanback.widget.Presenter> void huaweiAuth(Class<T> cls, Class<?> obj,  String cid);
+    <T extends Presenter> void getMediaUrl(Class<T> cls, Class<?> obj, String cid);
 
-    <T extends androidx.leanback.widget.Presenter> void huaweiSucc(Class<T> cls, Class<?> obj, String s);
+    <T extends Presenter> void onGetPlayUrlSuccess(Class<T> cls, Class<?> obj, String s);
 }

@@ -35,7 +35,7 @@ public interface DetailView extends BaseViewImpl {
 
     void stopFull();
 
-    void huaweiAuth(String cid, long  seek);
+    void getMediaUrl(MediaBean media, long  seek);
 
-    void huaweiSucc(String s, long  seek);
+    void onGetPlayUrlSuccess(String s, long  seek);
 }
