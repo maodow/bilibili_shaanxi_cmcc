@@ -200,14 +200,10 @@ public class GeneralTemplate21 extends ListTvRowHeadPresenter<GetSubChannelsByCh
     }
 
     public void pausePlayer(ViewGroup viewGroup) {
+        LogUtil.log("GeneralTemplate21 => pausePlayer =>");
         try {
             PlayerView playerView = viewGroup.findViewById(R.id.general_template21_player);
-            String url = playerView.getUrl();
-            if (null == url || url.length() <= 0)
-                throw new Exception("url error: " + url);
-            boolean playing = playerView.isPlaying();
-            if (!playing)
-                throw new Exception("playing error: false");
+            playerView.setPlayWhenReady(false);
             playerView.pause();
         } catch (Exception e) {
             LogUtil.log("GeneralTemplate21 => pausePlayer => " + e.getMessage());
@@ -215,14 +211,10 @@ public class GeneralTemplate21 extends ListTvRowHeadPresenter<GetSubChannelsByCh
     }
 
     public void resumePlayer(ViewGroup viewGroup) {
+        LogUtil.log("GeneralTemplate21 => resumePlayer =>");
         try {
             PlayerView playerView = viewGroup.findViewById(R.id.general_template21_player);
-            String url = playerView.getUrl();
-            if (null == url || url.length() <= 0)
-                throw new Exception("url error: " + url);
-            boolean playing = playerView.isPlaying();
-            if (playing)
-                throw new Exception("playing error: true");
+            playerView.setPlayWhenReady(true);
             playerView.resume();
         } catch (Exception e) {
             LogUtil.log("GeneralTemplate21 => resumePlayer => " + e.getMessage());
