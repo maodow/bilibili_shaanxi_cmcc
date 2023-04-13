@@ -99,7 +99,6 @@ public class WelcomePresenter extends BasePresenterImpl<WelcomeView> {
                         try {
                             if (BuildConfig.HUAN_CHECK_USERID) {
                                 Context context = getView().getContext();
-//                                String userId = HeilongjiangApi.getUserId(context);
                                 String userId = DevicesUtils.INSTANCE.getAccount();
                                 LogUtil.log("WelcomePresenter => request => userId = " + userId);
                                 if (userId.length() <= 0) {

@@ -39,7 +39,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-                <action android:name="tv.huan.bilibili.heilongjiang.open"/>
+                <action android:name="tv.huan.bilibili.shanxi.open"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>

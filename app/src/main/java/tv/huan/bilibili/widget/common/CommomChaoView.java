@@ -4,15 +4,12 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
-
 import lib.kalu.leanback.plus.TextViewPlus;
 import tv.huan.bilibili.R;
 import tv.huan.bilibili.utils.AuthUtils;
-import tv.huan.heilongjiang.HeilongjiangApi;
 import tv.huan.heilongjiang.OnStatusChangeListener;
 
 public final class CommomChaoView extends TextViewPlus {
@@ -59,7 +56,7 @@ public final class CommomChaoView extends TextViewPlus {
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                HeilongjiangApi.jumpVip(getContext(), null);
+                AuthUtils.getInstance().doPay(getContext(), "","");
             }
         });
     }

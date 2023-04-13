@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import tv.huan.bilibili.utils.AuthUtils;
-import tv.huan.heilongjiang.HeilongjiangApi;
 import tv.huan.heilongjiang.OnStatusChangeListener;
 
 @SuppressLint("AppCompatCustomView")

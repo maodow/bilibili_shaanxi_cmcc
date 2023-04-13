@@ -25,7 +25,7 @@ android {
     }
 
     signingConfigs {
-        release {
+        config {
             keyAlias 'huanwang'
             keyPassword 'huanwang'
             storeFile file('TvTentcentVideo.jks')
@@ -36,7 +36,7 @@ android {
 
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.config
             multiDexEnabled true
             zipAlignEnabled true
             shrinkResources true
@@ -73,7 +73,7 @@ android {
             buildConfigField("int", "HUAN_TYPE_FILM", "300")//电影
         }
         debug {
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.config
             multiDexEnabled true
             zipAlignEnabled false
             shrinkResources false
@@ -155,8 +155,6 @@ dependencies {
     // player
     api files('libs/lib_mediaplayer_ui_release_20230411.aar')
     api files('libs/lib_mediaplayer_exo_r2.18.5_ff4.4_audio_release_20230408.aar')
-    // heilongjiang
-    // api project(path: ':huan_heilongjiang')
     api files('libs/lib_huan_heilongjiang_release_20230407.aar')
 
     //Pay支付sdk

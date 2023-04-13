@@ -20,6 +20,7 @@ import tv.huan.bilibili.R;
 import tv.huan.bilibili.dialog.ExitDialog;
 import tv.huan.bilibili.upgrade.AppUpdateHelp;
 import tv.huan.bilibili.utils.ADUtil;
+import tv.huan.bilibili.utils.LogUtil;
 import tv.huan.bilibili.utils.StringUtils;
 import tv.huan.bilibili.widget.GeneralGridView;
 import tv.huan.bilibili.bean.ServerSettingData.UpgradeBean;
@@ -82,11 +83,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     public void initData() {
         getPresenter().checkIntent();
         getPresenter().showTabs();
-        // 自更新检测
-        UpgradeBean upgradeBean = (UpgradeBean)getIntent().getSerializableExtra(MainActivity.INTENT_UPGRADE);
-        if (null != upgradeBean) {
-            checkUpgrade(upgradeBean);
-        }
     }
 
     private void checkUpgrade(UpgradeBean upgradeBean) {
@@ -102,15 +98,29 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     public void refreshTabs(@NonNull List<TabModel> list, @NonNull int index) {
         TabLayout tabLayout = findViewById(R.id.main_tabs);
         tabLayout.setOnTabChangeListener(new OnTabChangeListener() {
-
             @Override
             public void onChecked(int i, int i1) {
                 stopFullPlayer();
                 getPresenter().showFragment(i);
             }
         });
+        LogUtil.log("=== refreshTabs ===");
         tabLayout.update(list, index);
+
+        checkUpdate();
     }
+
+
+    /**
+     *  自更新检测
+     */
+    private void checkUpdate(){
+        UpgradeBean upgradeBean = (UpgradeBean)getIntent().getSerializableExtra(MainActivity.INTENT_UPGRADE);
+        if (null != upgradeBean) {
+            checkUpgrade(upgradeBean);
+        }
+    }
+
 
     @Override
     public void leftScroll() {

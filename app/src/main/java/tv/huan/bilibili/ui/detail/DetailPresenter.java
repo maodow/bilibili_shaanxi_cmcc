@@ -681,7 +681,6 @@ public class DetailPresenter extends BasePresenterImpl<DetailView> {
 
                         String json = String.valueOf(object);
                         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=utf-8"), json);
-//                        String url = HeilongjiangApi.getEpgServer(getView().getContext());
                         String epgServer = DevicesUtils.INSTANCE.getEpgServer();
                         String reqUrl = "";
                         if(!TextUtils.isEmpty(epgServer)){

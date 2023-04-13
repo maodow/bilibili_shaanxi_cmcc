@@ -188,6 +188,7 @@ public class MainPresenter extends BasePresenterImpl<MainView> {
                         String extra = getView().getStringExtra(MainActivity.INTENT_TABS);
                         Type type = new TypeToken<List<GetChannelsBean.ItemBean>>() {
                         }.getType();
+
                         List<GetChannelsBean.ItemBean> datas = new Gson().fromJson(extra, type);
 
                         ArrayList<TabModel> list = new ArrayList<>();
@@ -426,7 +427,6 @@ public class MainPresenter extends BasePresenterImpl<MainView> {
                         object.put("idflag", "1");
                         String json = String.valueOf(object);
                         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=utf-8"), json);
-//                        String url = HeilongjiangApi.getEpgServer(getView().getContext());
                         String epgServer = DevicesUtils.INSTANCE.getEpgServer();
                         String reqUrl = "";
                         if(!TextUtils.isEmpty(epgServer)){
